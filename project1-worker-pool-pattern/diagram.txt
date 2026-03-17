@@ -1,0 +1,23 @@
+┌─────────┐     ┌──────────────┐     ┌─────────┐
+│ Master  │────▶│   Task       │────▶│ Worker 1│
+└─────────┘     │   Channel    │     └────┬────┘
+                │ (Buffered)   │          │
+                │              │     ┌────▼────┐
+                │              │────▶│ Worker 2│
+                │              │     └────┬────┘
+                │              │          │
+                │              │     ┌────▼────┐
+                │              │────▶│ Worker 3│
+                └──────────────┘     └────┬────┘
+                                          │
+                                    ┌─────▼─────┐
+                                    │  Result   │
+                                    │ Collector │
+                                    └───────────┘
+
+Key Concepts Demonstrated:
+• Fan-out: Multiple workers reading from same channel
+• Synchronization: WaitGroup ensures all workers complete
+• Channel Direction: taskCh (<-chan), resultCh (chan<-)
+• Buffered Channels: Allows non-blocking sends
+• Graceful Shutdown: Closing channels to signal completion
